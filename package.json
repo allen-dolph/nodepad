@@ -11,15 +11,15 @@
     "node": ">= 0.4.0"
   },
   "dependencies": {
-    "express": "2.5.1",
-    "connect": "1.8.1",
-    "mongoose": "2.3.12",
-    "stylus": "0.18.0",
-    "jade": "0.18.0",
-    "connect-mongodb": "1.1.1",
-    "markdown": "0.3.1",
-    "mailer": "0.6.7",
-    "connect-timeout": "0.0.1"
+    "express": "*",
+    "connect": "*",
+    "mongoose": "*",
+    "stylus": "*",
+    "jade": "*",
+    "connect-mongodb": "*",
+    "markdown": "*",
+    "mailer": "*",
+    "connect-timeout": "*"
   },
   "devDependencies": {
     "tobi": "0.3.2",

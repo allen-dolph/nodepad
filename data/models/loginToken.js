@@ -2,12 +2,12 @@
  * Created with JetBrains WebStorm.
  * User: allendolph
  * Date: 1/9/14
- * Time: 10:25 AM
+ * Time: 10:26 AM
  * To change this template use File | Settings | File Templates.
  */
 var mongoose = require('mongoose');
-var UserSchema = require('../schemas/user');
+var LoginTokenSchema = require('../schemas/loginToken');
 
-var User = mongoose.model('User', UserSchema);
+var LoginToken = mongoose.model('LoginToken', LoginTokenSchema);
 
-module.exports = User;
+module.exports = LoginToken;

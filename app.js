@@ -10,12 +10,11 @@ var express = require('express'),
     connectTimeout = require('connect-timeout'),
     util = require('util'),
     path = require('path'),
-    models = require('./models'),
+    User = require('./data/models/user'),
+    Document = require('./data/models/document'),
+    LoginToken = require('./data/models/loginToken'),
     mongoConnection = require('./dbconfig/mongoConnection.js'),
     db,
-    Document,
-    User,
-    LoginToken,
     Settings = { development: {}, test: {}, production: {} },
     emails;
 
@@ -102,12 +101,10 @@ app.configure(function() {
   });
 });
 
-models.defineModels(mongoose, function() {
-  app.Document = Document = mongoose.model('Document');
-  app.User = User = mongoose.model('User');
-  app.LoginToken = LoginToken = mongoose.model('LoginToken');
-  db = mongoose.connect(app.set('db-uri'));
-})
+app.User = User;
+app.Document = Document;
+app.LoginToken = LoginToken;
+db = mongoose.connect(app.set('db-uri'));
 
 function authenticateFromLoginToken(req, res, next) {
   var cookie = JSON.parse(req.cookies.logintoken);

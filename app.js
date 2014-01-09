@@ -11,6 +11,7 @@ var express = require('express'),
     util = require('util'),
     path = require('path'),
     models = require('./models'),
+    mongoConnection = require('./dbconfig/mongoConnection.js'),
     db,
     Document,
     User,
@@ -41,7 +42,7 @@ emails = {
 
       console.log('[SENDING MAIL]', util.inspect(mailOptions));
 
-      // Only send mails in production
+      // Only send mails in production                                       no
       if (app.settings.env == 'production') {
         mailer.send(mailOptions,
           function(err, result) {
@@ -59,11 +60,13 @@ emails = {
   }
 };
 
+console.log(mongoConnection.development);
+
 app.helpers(require('./helpers.js').helpers);
 app.dynamicHelpers(require('./helpers.js').dynamicHelpers);
 
 app.configure('development', function() {
-  app.set('db-uri', 'mongodb://localhost/nodepad-development');
+  app.set('db-uri', mongoConnection.development);
   app.use(express.errorHandler({ dumpExceptions: true }));
   app.set('view options', {
     pretty: true
@@ -71,14 +74,14 @@ app.configure('development', function() {
 });
 
 app.configure('test', function() {
-  app.set('db-uri', 'mongodb://localhost/nodepad-test');
+  app.set('db-uri', mongoConnection.test);
   app.set('view options', {
     pretty: true
   });  
 });
 
 app.configure('production', function() {
-  app.set('db-uri', 'mongodb://localhost/nodepad-production');
+  app.set('db-uri', mongoConnection.production);
 });
 
 app.configure(function() {
@@ -197,9 +200,13 @@ if (app.settings.env == 'production') {
 
 // Document list
 app.get('/documents', loadUser, function(req, res) {
-  Document.find({ user_id: req.currentUser.id },
-                [], { sort: ['title', 'descending'] },
-                function(err, documents) {
+  Document.find({
+            user_id: req.currentUser.id },
+            null,
+            {
+                skip: 0,
+                sort: { title: 1 }
+            }, function(err, documents) {
     documents = documents.map(function(d) {
       return { title: d.title, id: d._id };
     });
